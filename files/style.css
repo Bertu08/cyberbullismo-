@@ -1,0 +1,313 @@
+/* ─────────────────────────────────────────
+   RESET & ROOT VARIABLES
+───────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:          #080c14;
+  --panel:       #0d1520;
+  --border:      #1a2d45;
+  --green:       #00ff88;
+  --green-dim:   #00cc6a;
+  --red:         #ff2255;
+  --red-dim:     #cc1844;
+  --cyan:        #00e5ff;
+  --yellow:      #ffe600;
+  --text:        #c8d8e8;
+  --text-dim:    #5a7a9a;
+  --glow-green:  0 0 8px #00ff88, 0 0 20px #00ff8866;
+  --glow-red:    0 0 8px #ff2255, 0 0 20px #ff225566;
+  --glow-cyan:   0 0 8px #00e5ff, 0 0 20px #00e5ff55;
+  --font-main:   'Courier New', Courier, monospace;
+}
+
+/* ─────────────────────────────────────────
+   BASE LAYOUT
+───────────────────────────────────────── */
+html, body {
+  height: 100%;
+  font-family: var(--font-main);
+  background: var(--bg);
+  color: var(--text);
+  overflow: hidden;
+}
+
+/* ─────────────────────────────────────────
+   SCREENS
+───────────────────────────────────────── */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.35s ease;
+}
+.screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* scanline overlay */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0px,
+    transparent 3px,
+    rgba(0,0,0,0.12) 3px,
+    rgba(0,0,0,0.12) 4px
+  );
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ─────────────────────────────────────────
+   START / GAMEOVER CARD
+───────────────────────────────────────── */
+.start-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 40px 48px;
+  max-width: 480px;
+  width: 92%;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(0,229,255,0.08), inset 0 1px 0 rgba(255,255,255,0.04);
+  animation: cardIn 0.4s ease both;
+}
+
+@keyframes cardIn {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+/* ─────────────────────────────────────────
+   LOGO
+───────────────────────────────────────── */
+.logo-wrap {
+  font-size: clamp(2.4rem, 6vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin-bottom: 10px;
+}
+.logo-cyber {
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+}
+.logo-snake {
+  color: var(--green);
+  text-shadow: var(--glow-green);
+}
+
+.tagline {
+  color: var(--text-dim);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+/* ─────────────────────────────────────────
+   LEGEND
+───────────────────────────────────────── */
+.legend {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.82rem;
+  color: var(--text);
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+.dot.green { background: var(--green); box-shadow: var(--glow-green); }
+.dot.red   { background: var(--red);   box-shadow: var(--glow-red);   }
+
+/* ─────────────────────────────────────────
+   EDUCATIONAL MESSAGE BOX
+───────────────────────────────────────── */
+.edu-msg {
+  background: rgba(0,229,255,0.05);
+  border: 1px solid rgba(0,229,255,0.2);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 0.78rem;
+  color: var(--cyan);
+  line-height: 1.7;
+  margin-bottom: 28px;
+}
+
+/* ─────────────────────────────────────────
+   NEON BUTTON
+───────────────────────────────────────── */
+.btn-neon {
+  background: transparent;
+  border: 2px solid var(--green);
+  color: var(--green);
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  padding: 12px 40px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-shadow: var(--glow-green);
+  box-shadow: var(--glow-green);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.btn-neon:hover {
+  background: var(--green);
+  color: var(--bg);
+  box-shadow: 0 0 16px #00ff88, 0 0 40px #00ff8880;
+  text-shadow: none;
+}
+
+/* ─────────────────────────────────────────
+   HUD (in-game)
+───────────────────────────────────────── */
+#screen-game {
+  flex-direction: column;
+  gap: 0;
+  align-items: center;
+  justify-content: center;
+}
+#hud {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  padding: 6px 12px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+}
+#hud b { color: var(--cyan); }
+
+/* ─────────────────────────────────────────
+   CANVAS
+───────────────────────────────────────── */
+#game-canvas {
+  display: block;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  box-shadow: 0 0 24px rgba(0,229,255,0.1);
+  image-rendering: pixelated;
+}
+
+/* ─────────────────────────────────────────
+   EDU POPUP (in-game overlay)
+───────────────────────────────────────── */
+#edu-popup {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(13,21,32,0.95);
+  border: 1px solid var(--red);
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 0.78rem;
+  color: var(--red);
+  text-shadow: var(--glow-red);
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.4s;
+  z-index: 100;
+}
+#edu-popup.hidden { opacity: 0; }
+
+/* ─────────────────────────────────────────
+   GAME OVER
+───────────────────────────────────────── */
+.gameover-title {
+  font-size: 2.4rem;
+  letter-spacing: 0.1em;
+  color: var(--red);
+  text-shadow: var(--glow-red);
+  margin-bottom: 16px;
+}
+.gameover-score {
+  font-size: 1.1rem;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.gameover-record {
+  font-size: 0.9rem;
+  color: var(--cyan);
+  margin-bottom: 24px;
+}
+.gameover-score span,
+.gameover-record span {
+  font-weight: 700;
+}
+
+/* ─────────────────────────────────────────
+   CHARACTER SELECTION
+───────────────────────────────────────── */
+.character-select {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 32px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btn-character {
+  background: transparent;
+  border: 2px solid var(--cyan);
+  color: var(--cyan);
+  font-family: var(--font-main);
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 16px 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-shadow: var(--glow-cyan);
+  box-shadow: var(--glow-cyan);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+
+.btn-character:hover {
+  background: var(--cyan);
+  color: var(--bg);
+  box-shadow: 0 0 16px #00e5ff, 0 0 40px #00e5ff80;
+  text-shadow: none;
+}
+
+.character-display {
+  font-size: 0.9rem;
+  color: var(--text-dim);
+  margin-bottom: 12px;
+}
+
+.character-display span {
+  color: var(--cyan);
+  font-weight: 700;
+}
+
+#screen-name h2 {
+  font-size: 2rem;
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+  margin-bottom: 8px;
+}
+
+#screen-name > .start-card > p {
+  color: var(--text-dim);
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+}

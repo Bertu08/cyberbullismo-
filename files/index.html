@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberSnake – Sicurezza Online</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════
+       SCHERMATA SELEZIONE NOME
+  ══════════════════════════════════ -->
+  <div id="screen-name" class="screen active">
+    <div class="start-card">
+      <h2>Chi sei?</h2>
+      <p>Scegli il tuo personaggio</p>
+
+      <div class="character-select">
+        <button id="btn-ali" class="btn-character"> Alì</button>
+        <button id="btn-facchetti" class="btn-character">Facchetti</button>
+        <button id="btn-fabian" class="btn-character">Fabian</button>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCHERMATA INIZIALE
+  ══════════════════════════════════ -->
+  <div id="screen-start" class="screen">
+    <div class="start-card">
+      <div class="logo-wrap">
+        <span class="logo-cyber">CYBER</span><span class="logo-snake">SNAKE</span>
+      </div>
+      <p class="tagline">Raccogli i messaggi positivi.<br>Evita il cyberbullismo.</p>
+
+      <div class="legend">
+        <div class="legend-item">
+          <span class="dot green"></span>
+          <span>Messaggi positivi → punti +</span>
+        </div>
+        <div class="legend-item">
+          <span class="dot red"></span>
+          <span>Messaggi tossici → punti –</span>
+        </div>
+      </div>
+
+      <p class="edu-msg start-edu">
+        💬 Le parole online hanno conseguenze reali.<br>
+        Pensa prima di scrivere.
+      </p>
+
+      <button id="btn-start" class="btn-neon">INIZIA</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCHERMATA DI GIOCO
+  ══════════════════════════════════ -->
+  <div id="screen-game" class="screen">
+    <div id="hud">
+      <span id="hud-score">Punteggio: <b id="val-score">0</b></span>
+      <span id="hud-record">Record: <b id="val-record">0</b></span>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+
+    <!-- Messaggio educativo pop-up -->
+    <div id="edu-popup" class="hidden"></div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       SCHERMATA GAME OVER
+  ══════════════════════════════════ -->
+  <div id="screen-gameover" class="screen">
+    <div class="start-card">
+      <h2 class="gameover-title">GAME OVER</h2>
+      <p class="character-display">Giocatore: <span id="player-name">-</span></p>
+      <p class="gameover-score">Punteggio: <span id="final-score">0</span></p>
+      <p class="gameover-record">Record: <span id="final-record">0</span></p>
+      <p class="edu-msg">
+        🛡️ Segnala sempre il cyberbullismo.<br>
+        Non sei mai solo.
+      </p>
+      <button id="btn-restart" class="btn-neon">RIPROVA</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
