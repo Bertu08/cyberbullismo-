@@ -311,3 +311,101 @@ body::after {
   margin-bottom: 24px;
   font-size: 0.95rem;
 }
+
+/* ─────────────────────────────────────────
+   DIALOGO GAME OVER
+───────────────────────────────────────── */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  opacity: 1;
+  pointer-events: all;
+  transition: opacity 0.3s;
+}
+
+.dialog-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.dialog-box {
+  background: var(--panel);
+  border: 2px solid var(--cyan);
+  border-radius: 12px;
+  padding: 40px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(0, 229, 255, 0.3);
+  animation: dialogIn 0.3s ease both;
+}
+
+@keyframes dialogIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.dialog-box h3 {
+  font-size: 1.6rem;
+  color: var(--cyan);
+  text-shadow: var(--glow-cyan);
+  margin-bottom: 32px;
+  letter-spacing: 0.08em;
+}
+
+.dialog-buttons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.btn-dialog {
+  font-family: var(--font-main);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 12px 32px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 2px solid;
+  transition: all 0.2s;
+  letter-spacing: 0.08em;
+}
+
+.btn-yes {
+  border-color: var(--green);
+  color: var(--green);
+  text-shadow: var(--glow-green);
+  box-shadow: var(--glow-green);
+}
+
+.btn-yes:hover {
+  background: var(--green);
+  color: var(--bg);
+  box-shadow: 0 0 16px #00ff88, 0 0 40px #00ff8880;
+  text-shadow: none;
+}
+
+.btn-no {
+  border-color: var(--red);
+  color: var(--red);
+  text-shadow: var(--glow-red);
+  box-shadow: var(--glow-red);
+}
+
+.btn-no:hover {
+  background: var(--red);
+  color: var(--bg);
+  box-shadow: 0 0 16px #ff2255, 0 0 40px #ff225580;
+  text-shadow: none;
+}

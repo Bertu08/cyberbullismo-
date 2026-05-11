@@ -280,11 +280,15 @@ class Game {
     this.interval = 1000 / CFG.FPS;
     this.character = null; // nome personaggio scelto
 
+    // Audio
+    this.gameOverSound = new Audio('javascript.mp3');
+
     // UI
     this.elScore  = document.getElementById('val-score');
     this.elRecord = document.getElementById('val-record');
     this.popup    = document.getElementById('edu-popup');
     this.popupTimer = null;
+    this.dialog   = document.getElementById('dialog-gameover');
 
     // Schermate
     this.screens = {
@@ -297,9 +301,10 @@ class Game {
     // Bind eventi
     document.getElementById('btn-ali').addEventListener('click',       () => this.selectCharacter('Alì'));
     document.getElementById('btn-facchetti').addEventListener('click', () => this.selectCharacter('Facchetti'));
-      document.getElementById('btn-fabian').addEventListener('click',   () => this.selectCharacter('Fabian'));
+    document.getElementById('btn-fabian').addEventListener('click',   () => this.selectCharacter('Fabian'));
     document.getElementById('btn-start').addEventListener('click',   () => this.startGame());
-    document.getElementById('btn-restart').addEventListener('click', () => this.startGame());
+    document.getElementById('btn-yes').addEventListener('click', () => this.startGame());
+    document.getElementById('btn-no').addEventListener('click',  () => this.goToCharacterSelect());
     document.addEventListener('keydown', e => this.handleKey(e));
 
     // Mostra record iniziale
@@ -312,6 +317,25 @@ class Game {
   selectCharacter(name) {
     this.character = name;
     this.showScreen('start');
+  }
+
+  // ──────────────────────────────
+  // TORNA ALLA SELEZIONE PERSONAGGIO
+  // ──────────────────────────────
+  goToCharacterSelect() {
+    this.hideDialog();
+    this.showScreen('name');
+  }
+
+  // ──────────────────────────────
+  // GESTIONE DIALOGO
+  // ──────────────────────────────
+  showDialog() {
+    this.dialog.classList.remove('hidden');
+  }
+
+  hideDialog() {
+    this.dialog.classList.add('hidden');
   }
 
   // ──────────────────────────────
@@ -437,26 +461,12 @@ class Game {
       localStorage.setItem('cybersnake_record', this.record);
     }
 
-    document.getElementById('final-score').textContent  = this.score;
-    document.getElementById('final-record').textContent = this.record;
-    document.getElementById('player-name').textContent  = this.character || 'Sconosciuto';
+    // Play game over sound
+    this.gameOverSound.currentTime = 0;
+    this.gameOverSound.play().catch(e => console.log('Audio play failed:', e));
 
-    // Messaggio game over casuale basato sul personaggio scelto
-    let messages;
-    if (this.character === 'Facchetti') {
-      messages = GAMEOVER_MESSAGES_FACCHETTI;
-    } else if (this.character === 'Fabian') {
-      messages = GAMEOVER_MESSAGES_FABIAN;
-    } else {
-      messages = GAMEOVER_MESSAGES;
-    }
-    const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-    document.querySelector('#screen-gameover .edu-msg').innerHTML = randomMsg;
-    
-
-    this.playBeep(220, 0.2, 'sawtooth');
-
-    setTimeout(() => this.showScreen('gameover'), 300);
+    // Mostra dialogo
+    setTimeout(() => this.showDialog(), 300);
   }
 
   // ──────────────────────────────
