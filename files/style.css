@@ -409,3 +409,7 @@ body::after {
   box-shadow: 0 0 16px #ff2255, 0 0 40px #ff225580;
   text-shadow: none;
 }
+@keyframes floatUp {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(-40px); }
+}
